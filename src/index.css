@@ -17,6 +17,10 @@ body{
     margin: 50px auto;
 }
 
+header{
+    position: relative;
+}
+
 header .logo{
     font-weight: 400;
     font-size: 20px;
@@ -41,6 +45,85 @@ header ul.nav li:hover{
     
 }
 
+
+header .shop-cart-button{
+    float: right;      /* расположение справа*/
+    cursor: pointer;   /* при наведении меняет курсор*/
+    transition: color, transform 500ms ease; /* изменение цвета при нажатии*/
+}
+
+header .shop-cart-button:hover,
+header .shop-cart-button.active{
+    color: darkblue;
+}
+
+header .shop-cart{
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 450px;
+    background: turquoise;
+    -webkit-box-shadow: 14px 2px 18px 14px rgba(34, 60, 80, 0.45);
+    -moz-box-shadow: 14px 2px 18px 14px rgba(34, 60, 80, 0.45);
+    box-shadow: 14px 2px 18px 14px rgba(34, 60, 80, 0.45);
+    z-index: 1000;
+    padding: 20px;
+    padding-bottom: 0;
+}
+
+header .shop-cart .empty h2{
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: brown;
+    text-align: center;
+}
+
+header .shop-cart .item{
+    width: 100px;
+    float: left;
+    margin-bottom: 20px;
+}
+
+header .shop-cart .item img{
+    width: 70px;
+    float: left;
+    margin-right: 20px;
+
+}
+
+header .shop-cart .item h2{
+    font-size: 20px;
+    margin-bottom: 10px;
+
+}
+
+header .shop-car .item b{
+    color: aqua;
+    font-weight: 600;
+}
+
+header .shop-cart .item .delete-icon{
+    color: brown;
+    float: right;
+    position: relative;
+    top:-25px;
+    cursor: pointer;
+    transition: color, transform 500ms ease;
+}
+
+header .shop-cart .item .delete-icon:hover{
+    color: darkblue;
+    transform: scale(1.5);
+}
+
+header .shop-cart .summa{
+    float: left;
+    width: 100%;
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: brown;
+}
 
 header .presentation{
     margin:50px 0;
@@ -74,6 +157,65 @@ header .presentation::before{
     font-size: 30px;
     font-weight: 500;
     color:darkslategray;
+}
+
+main{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+}
+
+main .item{
+    width: 30%;
+    margin-bottom: 50px;
+    background: #6ebccf;
+    border-radius: 10px;
+    overflow: hidden;             /*при увеличении не выходит за рамки блока*/
+    position: relative;   /*Относительное позиционирование сдвигает элемент относительно его обычного положения*/
+}
+
+main .item img{
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    transition: transform 500ms ease; /*плавное увеличение*/
+}
+main .item img:hover{
+    transform: scale(1.05); /*при наведении увеличивается*/
+}
+main h2,
+main p,
+main b{
+    margin: 10px 20px;
+    color: darkslategray ;
+    padding-bottom: 30px;
+}
+
+main b{
+    color: red ;
+    
+}
+
+main .add-to-cart{          /*кнопка  + */
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background: rgb(21, 39, 4);
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 30px;
+    transition: transform 500ms ease; /* время анимации при наведении*/
+}
+
+main .add-to-cart:hover{
+    transform: scale(1.05) translateY(-5px);/*кнопка увеличивается и сдвигается вверх при наведении*/
+
 }
 
 
