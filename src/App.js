@@ -1,111 +1,65 @@
+import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { useState } from "react";
 import Items from "./components/Items";
+import Categories from "./components/Categories";
+import ShowFullItem from "./components/ShowFullItem";
+import axios from "axios";
 
 export default function App() {
-
   const [orders, setOrders] = useState([]);
-  const [items,setItems] = useState([
-    {
-      id:1,
-      title:'Книга 1',
-      img:'12.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Классика',
-      price:'102',
-    },
-    {
-      id:2,
-      title:'Книга 2',
-      img:'11.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Классика',
-      price:'50',
-    },
-    {
-      id:3,
-      title:'Книга 3',
-      img:'10.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Классика',
-      price:'бесплатно',
-    },
-    {
-      id:4,
-      title:'Книга 4',
-      img:'9.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Проза',
-      price:'бесплатно',
-    },
-    {
-      id:5,
-      title:'Книга 5',
-      img:'8.jpeg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Приключения',
-      price:'бесплатно',
-    },
-    {
-      id:6,
-      title:'Книга 6',
-      img:'7.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Драма',
-      price:'бесплатно',
-    },
-    {
-      id:7,
-      title:'Книга 7',
-      img:'6.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Классика',
-      price:'бесплатно',
-    },
-    {
-      id:8,
-      title:'Книга 8',
-      img:'5.png',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Сатира',
-      price:'бесплатно',
-    },
-    {
-      id:9,
-      title:'Книга 9',
-      img:'4.jpg',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'Юмор',
-      price:'бесплатно',
-    },
-    {
-      id:10,
-      title:'Книга10',
-      img:'3.webp',
-      desc:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      category:'наука',
-      price:'бесплатно',
+  const [currentItems,setCurrentItems]=useState([]);
+  const [showFullItem,setShowFullItem]=useState(false);
+  const [fullItem,setFullItem]=useState({});
+  const [items,setItems] =useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/items")
+      .then((response)=>{
+        setItems(response.data);
+        chooseCategory("all");
+        setCurrentItems(response.data);
+      })
+      .catch((error)=>{
+        console.error("Ошибка при загрузке данных", error);
+      });
+  }, [items]);
+  
+  const addToOrder = (item3) => { 
+  
+    if (!orders.some((el) => el.id === item3.id)) {
+      setOrders([...orders, item3]);
     }
-  ])
+  };
+  
+  const deleteOrder = (id) => {
+    setOrders(orders.filter((el) => el.id !== id));
+  };
 
-  const addToOder=(item3)=>{
-    if(!orders.some(el=>el.id===item3.id)){
-    setOrders([...orders, item3]);
+  const chooseCategory=(category)=>{
+    if(category==="all"){
+      setCurrentItems(items);
+    }
+    else{
+      setCurrentItems(items.filter((el) => el.category === category));
+    }
   }
-};
 
-const deleteOrder =(id)=>{
-  setOrders(orders.filter((el)=> el.id !==id));
-};
+  const onShowItem = (item)=>{
+    setFullItem(item);
+    setShowFullItem(!showFullItem);
+  }
 
   return (
-   <div className="wrapper">
-    <Header orders={orders} onDelete={deleteOrder}/>
-    <Items allItems={items} onAdd={addToOder}/>
-    <Footer/>
-   </div>
+    <div className="wrapper">
+      <Header orders={orders} onDelete={deleteOrder}/>
+      <Categories chooseCategory={chooseCategory}/>
+      <Items allItems={currentItems} onShowItem={onShowItem} onAdd={addToOrder}/>
+      {showFullItem && <ShowFullItem onShowItem={onShowItem} onAdd={addToOrder} item={fullItem}/>}
+      <Footer/>
+    </div>
   );
-  }
 
-
+  
+}
